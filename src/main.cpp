@@ -1,18 +1,20 @@
-// M5StickS3 + CAN トランシーバ（Grove）で Robstride を 1 台動かす最小サンプル。
+// M5StickS3 + 絶縁 CAN トランシーバーモジュールキットで Robstride を動かすスケッチ例。
 //
 //   起動 → Robstride を探す（ID 1〜127 に Type0）→ CSP（位置制御）で励磁
 //   → 今の位置を中心に ±90° の正弦波で往復させる。
 //   ボタン A（表の大きいボタン）: 停止（脱力）/ 再開
 //
-// 配線: Grove 白 G9 = CAN TX（トランシーバの TXD 入力へ）、黄 G10 = CAN RX（トランシーバの RXD 出力から）
-//       CANH / CANL を Robstride へ。バスの両端に 120Ω。ビットレート 1 Mbps。
+// 接続: M5StickS3 の Grove とモジュールの Grove ソケットを Grove ケーブルでつなぐ。
+//       Grove 白 G9 = CAN TX → TXD、黄 G10 = CAN RX ← RXD、赤 = 5V（モジュールの電源）
+//       ターミナルの H / L を Robstride の CANH / CANL へ。終端抵抗スイッチで 120Ω を入れる。
+//       ビットレート 1 Mbps。
 #include <M5Unified.h>
 #include <driver/twai.h>
 #include <math.h>
 
 constexpr int CAN_TX = 9;
 constexpr int CAN_RX = 10;
-constexpr bool GROVE_5V = true;   // 3.3V 専用のトランシーバを別電源で使うなら false
+constexpr bool GROVE_5V = true;   // Grove の 5V 出力を入れてモジュールに給電する
 
 constexpr float AMP_RAD = 1.57f;     // 振幅 ±90°
 constexpr float PERIOD_S = 4.0f;     // 1 往復 4 秒
